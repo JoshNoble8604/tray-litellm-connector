@@ -73,10 +73,15 @@ The screen has **three** fields:
 - `text_to_speech` — text → audio file (`/v1/audio/speech`)
 - `moderation` — content safety classification (`/v1/moderations`)
 
+**Privacy**
+- `redact_pii` — detect & mask **PII/PHI** in text (names, SSN, MRN, DOB, phone, email, addresses, member/policy IDs, …). Returns `masked_text` + detected `entities`. **Not an LLM** — deterministic entity detection. Takes a `text` input (no model). Requires a `/redact` route on your proxy (see note below).
+
 **Utility**
 - `list_models` — list models the connected proxy exposes (`/v1/models`)
 - `health_check` — proxy liveliness (`/health/liveliness`)
 - `warm_model` — JIT-load a model on self-hosted backends
+
+> **`redact_pii` backend:** `/redact` is **not** a native LiteLLM route. The op POSTs to `/redact` on your proxy, which you wire to a PII engine — e.g. set LiteLLM `general_settings.pass_through_endpoints` to forward `/redact` to a local [Microsoft Presidio](https://microsoft.github.io/presidio/) analyzer + anonymizer (so it runs **through** the proxy, with the proxy's auth, and the text never goes to an LLM). Without that route configured, `redact_pii` returns an error.
 
 Every model field is a **dynamic dropdown** that lists the models on *your* connected proxy, filtered by modality (via the proxy's `/model/info`), with a graceful fallback to all models when the proxy doesn't tag modality.
 

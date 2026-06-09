@@ -1,0 +1,5 @@
+{
+	"name": "redact_pii",
+	"title": "Redact PII / PHI",
+	"description": "Detect and mask PII/PHI in text using Microsoft Presidio (local rule + NER entity detection — names, SSN, MRN, DOB, phone, email, addresses, member/policy IDs, etc.). Returns the text with identifiers replaced by <ENTITY_TYPE> placeholders, plus the detected entities. This is deterministic detection — NOT an LLM, and your text is not sent to any model."
+}
