@@ -32,6 +32,7 @@ export type TranscriptionInput = {
 	/**
 	 * @title Response Format
 	 * @description Optional. Keep as json (default) or verbose_json for segments/timestamps. Plain-text formats (text, srt, vtt) are not parsed here.
+	 * @default json
 	 */
 	response_format?: string;
 };

@@ -15,11 +15,13 @@ export type ImageGenerationInput = {
 	/**
 	 * @title Number of Images
 	 * @description Optional. How many images to generate. Defaults to 1.
+	 * @default 1
 	 */
 	n?: number;
 	/**
 	 * @title Size
 	 * @description Optional. Image dimensions, e.g. 1024x1024, 1792x1024, or 1024x1792.
+	 * @default 1024x1024
 	 */
 	size?: string;
 	/**

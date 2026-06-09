@@ -25,6 +25,7 @@ export type RerankInput = {
 	/**
 	 * @title Return Documents
 	 * @description Optional. When true, the document text is echoed back in each result. Ranked Documents is populated regardless.
+	 * @default true
 	 */
 	return_documents?: boolean;
 };
