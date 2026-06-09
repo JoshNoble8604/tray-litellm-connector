@@ -10,6 +10,9 @@ tsconfig.tsbuildinfo
 # Local test context — contains a real LiteLLM proxy key. NEVER commit.
 src/test.ctx.json
 
+# Local env — your filled-in copy of .env.example (token + proxy key). NEVER commit.
+.env
+
 # backups
 *.bak
 *.bak-*

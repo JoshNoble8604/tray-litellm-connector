@@ -22,6 +22,26 @@ Because it speaks the standard OpenAI-compatible LiteLLM API, it works against *
 
 Each step is detailed below.
 
+## Reconfiguring for a new customer (`.env`)
+
+To make re-pointing the connector at a different customer easy, copy [`.env.example`](.env.example) → `.env` and fill it in once — it's the single place to hold every value a deploy needs. `.env` is **gitignored**, so your token and proxy key stay local.
+
+```bash
+cp .env.example .env        # then edit the values
+export $(grep -v '^#' .env | grep -v '^$' | xargs)   # load into your shell for a deploy
+```
+
+| `.env` var | Auto-read by `tray-cdk`? | Where it goes |
+|---|---|---|
+| `TRAY_API_TOKEN` | **Yes** — deploy / permissions / oauth2-token | (used directly) |
+| `TRAY_API_BASE_URL` | region (or use `--us`/`--eu`/…) | (used directly) |
+| `TRAY_ORG_ID` | no | `tray-cdk namespace get <id>` |
+| `CDK_NAMESPACE` | no | `connector.json` → `name` = `<namespace>-litellm` |
+| `service_name` | no | `connector.json` → `service.name` |
+| `endpoint` / `api_key` | no | the **New-authentication** screen (and `src/test.ctx.json` for `npm test`) |
+
+Only `TRAY_API_TOKEN` (and `TRAY_API_BASE_URL`) are consumed by the CLI directly; the rest are reference values you paste into `connector.json`, the Tray Service, or the auth screen as described below.
+
 ## Set up the Tray Service (one-time, before deploying)
 
 A Tray CDK connector binds to a **Service** that defines its authentication. You must create this Service in Tray **before** the first deploy, because `connector.json` references the Service's unique name.
