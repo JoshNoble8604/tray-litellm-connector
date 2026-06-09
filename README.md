@@ -92,6 +92,20 @@ npm test               # runs against the proxy in src/test.ctx.json
 
 To run the tests, copy `src/test.ctx.example.json` → `src/test.ctx.json` and fill in **your own** proxy endpoint + key. `src/test.ctx.json` is **gitignored**, so the key you put there stays on your machine and is never committed. The repository contains only the placeholder example — no real keys.
 
+## Connector name & namespace
+
+CDK connectors deploy under your org's **connector namespace**, and the `name` in [`connector.json`](connector.json) **must be prefixed with that namespace**.
+
+1. Find your namespace (or create one):
+
+   ```bash
+   tray-cdk namespace get <your-org-id> --us       # or: tray-cdk namespace create <your-org-id> --us
+   ```
+2. Set `connector.json` → `name` to `<namespace>-litellm`. This repo ships `tray-litellm` (namespace `tray`); if your namespace is e.g. `acme`, rename it to `acme-litellm` (keep `version` as-is, e.g. `1.0`).
+3. Use that exact `<name> <version>` (e.g. `tray-litellm 1.0`) in **every** `tray-cdk` command and when sharing.
+
+> If the `name` isn't prefixed with your org's namespace, the deploy is rejected.
+
 ## Deploy
 
 ```bash
@@ -105,6 +119,8 @@ tray-cdk permissions add tray-litellm 1.0 --email=<teammate@example.com> --us
 - `TRAY_API_TOKEN` — a Tray API token for your workspace (from your Tray account settings). Pass the **region flag** matching your Tray region (`--us`, `--eu`, `--ap`, `--ap2`).
 - Deploy runs `npm test` first, so keep `src/test.ctx.json` pointed at a working proxy.
 - Requires the Tray **Service** from [Set up the Tray Service](#set-up-the-tray-service-one-time-before-deploying) above, with its Unique Service Name in `connector.json`.
+
+> **Sharing is by exact email.** A CDK connector is visible only to the **exact** email addresses on its share list, within the same org — so you must share it with the email each person logs into **that Tray instance** with. Sub-addressed emails count as a **different account**: `you+demo@company.com` ≠ `you@company.com`. A connector that "doesn't show up" in the builder is almost always this email/identity mismatch.
 
 ## Troubleshooting
 
