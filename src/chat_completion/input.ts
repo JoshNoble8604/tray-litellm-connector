@@ -47,7 +47,7 @@ export type ChatCompletionInput = {
 	max_tokens?: number;
 	/**
 	 * @title JSON Response
-	 * @description When true, asks the model to return a strict JSON object (use when your prompt requests JSON). The reply is also parsed into the JSON output.
+	 * @description When true, constrains the model to return valid JSON (object or array) using a permissive json_schema — works on OpenAI-compatible gateways including LM Studio. Use when your prompt asks for JSON; the reply is also parsed into the JSON output. For a specific shape, use Response Format with your own json_schema instead.
 	 */
 	json_response?: boolean;
 	/**

@@ -87,7 +87,16 @@ export const chatCompletionHandler = OperationHandlerSetup.configureHandler<
 					...(input.response_format
 						? { response_format: input.response_format as any }
 						: input.json_response
-						? { response_format: { type: 'json_object' } }
+						? {
+								// Permissive json_schema (any JSON) instead of json_object:
+								// some gateways (e.g. LM Studio) reject json_object and accept
+								// only json_schema/text. An empty schema constrains output to
+								// valid JSON — object or array.
+								response_format: {
+									type: 'json_schema',
+									json_schema: { name: 'json_output', schema: {} },
+								} as any,
+						  }
 						: {}),
 					...(input.tools && input.tools.length > 0
 						? { tools: input.tools as any }
