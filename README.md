@@ -4,14 +4,40 @@ A custom [Tray](https://tray.io) connector (built with the Tray Connector Develo
 
 Because it speaks the standard OpenAI-compatible LiteLLM API, it works against **any** LiteLLM deployment (self-hosted, hosted, or Enterprise) and is agnostic to whatever models/providers sit behind the gateway (OpenAI, Anthropic, Bedrock, local models, etc.).
 
-## Authentication
+## Set up the Tray Service (one-time, before deploying)
 
-Token auth — two fields:
+A Tray CDK connector binds to a **Service** that defines its authentication. You must create this Service in Tray **before** the first deploy, because `connector.json` references the Service's unique name.
 
-| Field | Description |
-|---|---|
-| **Endpoint URL** | Base URL of your LiteLLM proxy, **no trailing slash and no `/v1`** (the connector adds paths). e.g. `https://litellm.example.com` |
-| **API Key** | A LiteLLM key (virtual or master), sent as `Authorization: Bearer <key>`. |
+1. In Tray, go to **Services → New service**.
+2. Name it (e.g. `LiteLLM`).
+3. Set **Authentication type** to **Token**.
+4. Add two **custom authentication properties**, **user**-scoped, type **String**. The property **keys must match exactly** — the connector reads `ctx.auth.user.endpoint` and `ctx.auth.user.api_key`, so any mismatch causes `api_key: undefined` at runtime:
+
+   | Property key (exact) | Type | Title shown to user | Required |
+   |---|---|---|---|
+   | `endpoint` | String | `Endpoint URL` | yes |
+   | `api_key` | String | `API Key` | yes |
+
+   There are **no app/secret (client) properties** — it's purely user-supplied.
+5. Save. Tray generates a **Unique Service Name** (e.g. `pNRVyYfOXKbDLBK_litellm`).
+6. Put that name into [`connector.json`](connector.json):
+
+   ```json
+   "service": { "name": "<your-unique-service-name>", "version": "1" }
+   ```
+
+> The auth shape is defined in code in [`src/LitellmAuth.ts`](src/LitellmAuth.ts) — `TokenOperationHandlerAuth` with **user** fields `endpoint` + `api_key` and an empty app type. The Service's property keys must mirror those exactly.
+
+## Authentication (what end users enter)
+
+When a builder adds the connector and creates a **New authentication**, they fill in just these two fields:
+
+| Field (in Tray) | Maps to Service property | Value |
+|---|---|---|
+| **Endpoint URL** | `endpoint` | Base URL of the LiteLLM proxy — **no trailing slash, no `/v1`** (the connector adds the path). e.g. `https://litellm.example.com` |
+| **API Key** | `api_key` | A LiteLLM key (virtual or master). Sent as `Authorization: Bearer <key>`. |
+
+No client/app credentials are required — it's a single user-supplied token auth.
 
 ## Operations
 
@@ -43,7 +69,7 @@ npm run compile        # tsc + copy schema json
 npm test               # runs against the proxy in src/test.ctx.json
 ```
 
-Copy `src/test.ctx.example.json` → `src/test.ctx.json` and fill in your proxy endpoint + key (this file is gitignored — it holds a real key).
+To run the tests, copy `src/test.ctx.example.json` → `src/test.ctx.json` and fill in **your own** proxy endpoint + key. `src/test.ctx.json` is **gitignored**, so the key you put there stays on your machine and is never committed. The repository contains only the placeholder example — no real keys.
 
 ## Deploy
 
@@ -55,4 +81,4 @@ tray-cdk deployment get tray-litellm 1.0 <deployment-id> --us
 tray-cdk permissions add tray-litellm 1.0 --email=<teammate@example.com> --us
 ```
 
-Requires a Tray **Service** whose custom Token-auth property keys exactly match the connector's auth fields (`endpoint`, `api_key`).
+Requires the Tray **Service** from [Set up the Tray Service](#set-up-the-tray-service-one-time-before-deploying) above, with its Unique Service Name set in `connector.json`.
