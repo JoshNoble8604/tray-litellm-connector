@@ -1,0 +1,1 @@
+{"name":"tray-litellm","version":"1.0","title":"LiteLLM","description":"Call any LLM through your LiteLLM proxy (OpenAI-compatible) with a simple form. Chat completions and embeddings — no scripts required.","service":{"name":"pNRVyYfOXKbDLBK_litellm","version":"1"},"tags":["service","ai"],"isTrigger":false,"rawHttp":{"enabled":false}}

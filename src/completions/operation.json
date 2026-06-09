@@ -1,0 +1,5 @@
+{
+	"name": "completions",
+	"title": "Text Completion (Legacy)",
+	"description": "Send a single prompt to a text-completion model on your LiteLLM proxy and get raw generated text. Use Chat Completion for modern chat models; use this for base/legacy models that only support /v1/completions."
+}

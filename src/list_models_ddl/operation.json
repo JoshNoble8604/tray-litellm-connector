@@ -1,0 +1,6 @@
+{
+	"name": "list_models_ddl",
+	"title": "List Models (DDL)",
+	"description": "Dynamic dropdown of the models available on the connected LiteLLM proxy, optionally filtered by modality (chat, embedding, image_generation, audio_transcription, audio_speech, rerank, moderation). Used to populate model pickers; hidden from the operation list.",
+	"type": "ddl"
+}

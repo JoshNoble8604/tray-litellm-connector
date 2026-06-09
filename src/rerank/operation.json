@@ -1,0 +1,5 @@
+{
+	"name": "rerank",
+	"title": "Rerank Documents",
+	"description": "Reorder a list of documents by relevance to a query using a reranking model on your LiteLLM proxy. Ideal for sharpening RAG retrieval before sending context to the LLM."
+}

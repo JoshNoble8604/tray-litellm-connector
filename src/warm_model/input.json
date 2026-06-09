@@ -1,0 +1,1 @@
+{"type":"object","properties":{"model":{"title":"Model","description":"The model name to warm up / load.","type":"string","lookup":{"operation":"list_models_ddl","input":{"modality":"chat"},"authRequired":true}}},"additionalProperties":false,"required":["model"],"$schema":"http://json-schema.org/draft-07/schema#","advanced":[]}

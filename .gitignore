@@ -1,0 +1,15 @@
+# dependencies & build output
+node_modules/
+dist/
+.tray/
+tsconfig.tsbuildinfo
+
+# OS
+.DS_Store
+
+# Local test context — contains a real LiteLLM proxy key. NEVER commit.
+src/test.ctx.json
+
+# backups
+*.bak
+*.bak-*

@@ -1,0 +1,1 @@
+{"type":"object","properties":{"ok":{"title":"OK","description":"True if the proxy responded.","type":"boolean"},"status_code":{"title":"Status Code","description":"HTTP status from the proxy's liveness endpoint.","type":"number"}},"additionalProperties":false,"required":["ok","status_code"],"$schema":"http://json-schema.org/draft-07/schema#","advanced":[]}

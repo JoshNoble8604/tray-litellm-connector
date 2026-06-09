@@ -1,0 +1,5 @@
+{
+	"name": "image_generation",
+	"title": "Generate Image",
+	"description": "Generate an image from a text prompt using an image model on your LiteLLM proxy (e.g. dall-e-3, gpt-image-1). Returns an image URL or base64 data."
+}

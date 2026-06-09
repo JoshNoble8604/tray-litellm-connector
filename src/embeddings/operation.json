@@ -1,0 +1,5 @@
+{
+	"name": "embeddings",
+	"title": "Create Embedding",
+	"description": "Turn a piece of text into an embedding vector via your LiteLLM proxy."
+}

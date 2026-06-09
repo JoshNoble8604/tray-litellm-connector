@@ -1,0 +1,5 @@
+{
+	"name": "moderation",
+	"title": "Moderate Content",
+	"description": "Classify whether a piece of text contains harmful content (hate, self-harm, sexual, violence, etc.) using a moderation model on your LiteLLM proxy. Use as a safety gate on user or model-generated text."
+}

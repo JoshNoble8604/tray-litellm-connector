@@ -1,0 +1,9 @@
+{
+	"auth": {
+		"user": {
+			"endpoint": "https://your-litellm-proxy.example.com",
+			"api_key": "sk-your-litellm-virtual-key"
+		},
+		"app": {}
+	}
+}

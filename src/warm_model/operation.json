@@ -1,0 +1,5 @@
+{
+	"name": "warm_model",
+	"title": "Warm Up Model",
+	"description": "Send a tiny request so the model is loaded and ready (self-hosted backends like LM Studio load a model on first use). Returns whether it responded."
+}

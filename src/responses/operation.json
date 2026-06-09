@@ -1,0 +1,5 @@
+{
+	"name": "responses",
+	"title": "Generate Response (Responses API)",
+	"description": "Call the OpenAI-style Responses API on your LiteLLM proxy — a unified generation endpoint. Returns the assistant's text plus the raw output items. Use Chat Completion for the widest model support; use this when your model/provider targets the Responses API."
+}

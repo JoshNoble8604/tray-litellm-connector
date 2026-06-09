@@ -1,0 +1,5 @@
+{
+	"name": "chat_completion",
+	"title": "Chat Completion",
+	"description": "Send a prompt to an LLM via your LiteLLM proxy and get the reply text back."
+}

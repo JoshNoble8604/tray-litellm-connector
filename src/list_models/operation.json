@@ -1,0 +1,5 @@
+{
+	"name": "list_models",
+	"title": "List Models",
+	"description": "List the model names available through your LiteLLM proxy (the values you can use in a Chat Completion's Model field)."
+}

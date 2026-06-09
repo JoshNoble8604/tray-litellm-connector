@@ -1,0 +1,5 @@
+{
+	"name": "transcription",
+	"title": "Transcribe Audio",
+	"description": "Convert an audio file to text using a speech-to-text model on your LiteLLM proxy (e.g. whisper-1). Provide a file from an upstream step (download, trigger, etc.)."
+}

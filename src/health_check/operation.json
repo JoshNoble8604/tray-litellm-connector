@@ -1,0 +1,5 @@
+{
+	"name": "health_check",
+	"title": "Health Check",
+	"description": "Check that the LiteLLM proxy is reachable and responding."
+}

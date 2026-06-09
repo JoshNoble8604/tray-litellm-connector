@@ -1,0 +1,5 @@
+{
+	"name": "text_to_speech",
+	"title": "Text to Speech",
+	"description": "Convert text into spoken audio using a TTS model on your LiteLLM proxy (e.g. tts-1). Returns an audio file you can pass to a downstream step (upload, email attachment, etc.)."
+}
