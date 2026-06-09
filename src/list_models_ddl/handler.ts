@@ -14,10 +14,11 @@ type RawModelInfo = {
 
 /**
  * Backs the dynamic model dropdowns. Calls the proxy's /model/info, optionally
- * filters by LiteLLM `mode` (so an image field only lists image models, etc.),
- * and falls back to ALL models when the proxy doesn't tag the requested
- * modality — so the dropdown is never empty on a customer gateway that lacks
- * model_info. The `*` wildcard route is excluded (it isn't a real model).
+ * filters by LiteLLM `mode` (so an image field only lists image models, etc.).
+ * Fallback: if the proxy tags NO modality at all, return all models (so the
+ * dropdown is never empty on a gateway without model_info); but if the proxy
+ * DOES tag modality and simply has none of the requested type, return empty
+ * (don't mislead with unrelated models). The `*` wildcard route is excluded.
  */
 export const listModelsDdlHandler = OperationHandlerSetup.configureHandler<
 	LitellmAuth,
@@ -38,8 +39,18 @@ export const listModelsDdlHandler = OperationHandlerSetup.configureHandler<
 						const matched = entries
 							.filter((m) => m.model_info?.mode === input.modality)
 							.map((m) => m.model_name);
-						names =
-							matched.length > 0 ? matched : entries.map((m) => m.model_name);
+						const proxyTagsModality = entries.some((m) => m.model_info?.mode);
+						if (matched.length > 0) {
+							// Models of this modality exist — show exactly those.
+							names = matched;
+						} else if (!proxyTagsModality) {
+							// Proxy doesn't tag modality at all → show everything so the
+							// dropdown is never empty on an untagged gateway.
+							names = entries.map((m) => m.model_name);
+						} else {
+							// Proxy tags modality but has none of this type → genuinely none.
+							names = [];
+						}
 					} else {
 						names = entries.map((m) => m.model_name);
 					}
