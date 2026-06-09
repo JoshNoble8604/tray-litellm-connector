@@ -17,7 +17,7 @@ Because it speaks the standard OpenAI-compatible LiteLLM API, it works against *
 2. Put that name in [`connector.json`](connector.json) → `service.name` (replace the placeholder committed here).
 3. `npm install`
 4. **Deploy:** `export TRAY_API_TOKEN=<your token>` then `tray-cdk deployment create --us`
-5. **Share** with your Tray login email: `tray-cdk permissions add tray-litellm 1.0 --email=you@example.com --us`
+5. **Share** with your Tray login email: `tray-cdk permissions add <connector-name> 1.0 --email=you@example.com --us` (use *your* renamed connector name, not `tray-litellm` — see step 2)
 6. In the Tray builder: add the **LiteLLM** connector → **New authentication** (Name + endpoint + api_key) → drop any operation into a workflow.
 
 Each step is detailed below.
@@ -117,10 +117,11 @@ CDK connectors deploy under your org's **connector namespace**, and the `name` i
 export TRAY_API_BASE_URL=https://api.tray.io
 export TRAY_API_TOKEN=<your Tray workspace token>
 tray-cdk deployment create --us            # --us | --eu | --ap | --ap2
-tray-cdk deployment get tray-litellm 1.0 <deployment-id> --us
-tray-cdk permissions add tray-litellm 1.0 --email=<teammate@example.com> --us
+tray-cdk deployment get <connector-name> 1.0 <deployment-id> --us
+tray-cdk permissions add <connector-name> 1.0 --email=<teammate@example.com> --us
 ```
 
+- **`<connector-name>`** = the `name` in your `connector.json`. This repo ships `tray-litellm` (namespace `tray`), but **you must rename it to *your* org's namespace** (e.g. `acme-litellm`) — see [Connector name & namespace](#connector-name--namespace). Use that exact name in every command, not `tray-litellm`.
 - `TRAY_API_TOKEN` — a Tray API token for your workspace (from your Tray account settings). Pass the **region flag** matching your Tray region (`--us`, `--eu`, `--ap`, `--ap2`).
 - Deploy runs `npm test` first, so keep `src/test.ctx.json` pointed at a working proxy.
 - Requires the Tray **Service** from [Set up the Tray Service](#set-up-the-tray-service-one-time-before-deploying) above, with its Unique Service Name in `connector.json`.
@@ -132,7 +133,8 @@ tray-cdk permissions add tray-litellm 1.0 --email=<teammate@example.com> --us
 | Symptom | Cause / fix |
 |---|---|
 | `api_key` / `endpoint` is `undefined` at runtime | The Service's auth property **keys** don't exactly match `endpoint` / `api_key` (case-sensitive). Re-check the Service properties. |
-| Connector doesn't appear in the Tray builder | It's only visible to emails on its share list, in the same org. Run `tray-cdk permissions add tray-litellm 1.0 --email=<your exact Tray login email> --us`. |
+| Connector doesn't appear in the Tray builder | It's only visible to emails on its share list, in the same org. Run `tray-cdk permissions add <connector-name> 1.0 --email=<your exact Tray login email> --us`. |
+| Deploy rejected / connector not found | The `connector.json` `name` isn't prefixed with **your** org's namespace. It must be `<your-namespace>-litellm`, not `tray-litellm` (this repo's default). Run `tray-cdk namespace get <org-id> --us` to find yours. |
 | `Invalid model name … available models for your key` | Your LiteLLM **virtual key** isn't scoped to that model. Broaden it (`/key/update` with `models: ["all-proxy-models"]`) or use a key that includes it. |
 | Model dropdown is empty or shows the wrong models | Same key-scoping as above — the dropdown lists only what your key can access (and filters by modality via `/model/info`). |
 | An operation returns 404/500 | The proxy has no backend configured for that modality (e.g. no reranker, moderation, image, or audio model). The connector builds the request correctly; configure the model on your LiteLLM proxy. |
