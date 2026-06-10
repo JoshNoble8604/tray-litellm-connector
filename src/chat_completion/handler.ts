@@ -78,6 +78,7 @@ export const chatCompletionHandler = OperationHandlerSetup.configureHandler<
 				return request.withBodyAsJson({
 					model: input.model,
 					messages: messages as any,
+					enable_thinking: false,
 					...(input.temperature !== undefined
 						? { temperature: input.temperature }
 						: {}),
