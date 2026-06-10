@@ -4,6 +4,7 @@ import { LitellmAuth } from '../LitellmAuth';
 import { TextToSpeechInput } from './input';
 import { TextToSpeechOutput } from './output';
 import { globalConfigHttp } from '../GlobalConfig';
+import { litellmError } from '../errorHandling';
 
 export const textToSpeechHandler = OperationHandlerSetup.configureHandler<
 	LitellmAuth,
@@ -26,7 +27,7 @@ export const textToSpeechHandler = OperationHandlerSetup.configureHandler<
 			)
 			// The endpoint streams back raw audio bytes — capture them as a file.
 			.handleResponse((ctx, input, response) =>
-				response.parseWithBodyAsFile<TextToSpeechOutput['file']>((file) =>
+				response.withErrorHandling(litellmError(response.getStatusCode())).parseWithBodyAsFile<TextToSpeechOutput['file']>((file) =>
 					OperationHandlerResult.success({ file })
 				)
 			)

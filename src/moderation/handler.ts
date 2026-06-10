@@ -4,6 +4,7 @@ import { LitellmAuth } from '../LitellmAuth';
 import { ModerationInput } from './input';
 import { ModerationOutput } from './output';
 import { globalConfigHttp } from '../GlobalConfig';
+import { litellmError } from '../errorHandling';
 
 type RawModerationResult = {
 	flagged: boolean;
@@ -31,7 +32,7 @@ export const moderationHandler = OperationHandlerSetup.configureHandler<
 				})
 			)
 			.handleResponse((ctx, input, response) =>
-				response.parseWithBodyAsJson((body: RawModeration) => {
+				response.withErrorHandling(litellmError(response.getStatusCode())).parseWithBodyAsJson((body: RawModeration) => {
 					const first = body.results && body.results[0];
 					return OperationHandlerResult.success({
 						flagged: first?.flagged ?? false,

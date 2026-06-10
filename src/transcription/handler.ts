@@ -4,6 +4,7 @@ import { LitellmAuth } from '../LitellmAuth';
 import { TranscriptionInput } from './input';
 import { TranscriptionOutput } from './output';
 import { globalConfigHttp } from '../GlobalConfig';
+import { litellmError } from '../errorHandling';
 
 type RawTranscription = {
 	text: string;
@@ -39,7 +40,7 @@ export const transcriptionHandler = OperationHandlerSetup.configureHandler<
 				})
 			)
 			.handleResponse((ctx, input, response) =>
-				response.parseWithBodyAsJson((body: RawTranscription) =>
+				response.withErrorHandling(litellmError(response.getStatusCode())).parseWithBodyAsJson((body: RawTranscription) =>
 					OperationHandlerResult.success({
 						text: body.text ?? '',
 						language: body.language,

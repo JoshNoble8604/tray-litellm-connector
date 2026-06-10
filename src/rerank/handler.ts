@@ -4,6 +4,7 @@ import { LitellmAuth } from '../LitellmAuth';
 import { RerankInput } from './input';
 import { RerankOutput } from './output';
 import { globalConfigHttp } from '../GlobalConfig';
+import { litellmError } from '../errorHandling';
 
 type RawRerankResult = {
 	index: number;
@@ -36,7 +37,7 @@ export const rerankHandler = OperationHandlerSetup.configureHandler<
 				})
 			)
 			.handleResponse((ctx, input, response) =>
-				response.parseWithBodyAsJson((body: RawRerank) => {
+				response.withErrorHandling(litellmError(response.getStatusCode())).parseWithBodyAsJson((body: RawRerank) => {
 					const results = body.results ?? [];
 					// Results come back sorted most-relevant first; map each back to
 					// the original document text via its index so workflows get a

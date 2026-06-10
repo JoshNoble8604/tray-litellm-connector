@@ -4,6 +4,7 @@ import { LitellmAuth } from '../LitellmAuth';
 import { EmbeddingsInput } from './input';
 import { EmbeddingsOutput } from './output';
 import { globalConfigHttp } from '../GlobalConfig';
+import { litellmError } from '../errorHandling';
 
 type RawEmbeddings = {
 	data: Array<{ embedding: number[] }>;
@@ -23,7 +24,7 @@ export const embeddingsHandler = OperationHandlerSetup.configureHandler<
 				request.withBodyAsJson({ model: input.model, input: input.input })
 			)
 			.handleResponse((ctx, input, response) =>
-				response.parseWithBodyAsJson((body: RawEmbeddings) =>
+				response.withErrorHandling(litellmError(response.getStatusCode())).parseWithBodyAsJson((body: RawEmbeddings) =>
 					OperationHandlerResult.success({
 						embedding: body.data?.[0]?.embedding ?? [],
 						model: body.model,

@@ -4,6 +4,7 @@ import { LitellmAuth } from '../LitellmAuth';
 import { ListModelsInput } from './input';
 import { ListModelsOutput } from './output';
 import { globalConfigHttp } from '../GlobalConfig';
+import { litellmError } from '../errorHandling';
 
 type RawModels = { data: Array<{ id: string }> };
 
@@ -17,7 +18,7 @@ export const listModelsHandler = OperationHandlerSetup.configureHandler<
 			.get('/v1/models')
 			.handleRequest((ctx, input, request) => request.withoutBody())
 			.handleResponse((ctx, input, response) =>
-				response.parseWithBodyAsJson((body: RawModels) => {
+				response.withErrorHandling(litellmError(response.getStatusCode())).parseWithBodyAsJson((body: RawModels) => {
 					const models = (body.data || []).map((m) => m.id);
 					return OperationHandlerResult.success({
 						models,

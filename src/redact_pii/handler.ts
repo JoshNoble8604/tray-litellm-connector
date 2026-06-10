@@ -4,6 +4,7 @@ import { LitellmAuth } from '../LitellmAuth';
 import { RedactPiiInput } from './input';
 import { RedactPiiOutput } from './output';
 import { globalConfigHttp } from '../GlobalConfig';
+import { litellmError } from '../errorHandling';
 
 type RawRedact = {
 	masked_text: string;
@@ -32,7 +33,7 @@ export const redactPiiHandler = OperationHandlerSetup.configureHandler<
 				})
 			)
 			.handleResponse((ctx, input, response) =>
-				response.parseWithBodyAsJson((body: RawRedact) =>
+				response.withErrorHandling(litellmError(response.getStatusCode())).parseWithBodyAsJson((body: RawRedact) =>
 					OperationHandlerResult.success({
 						masked_text: body.masked_text ?? '',
 						entities: (body.entities ?? []) as object[],

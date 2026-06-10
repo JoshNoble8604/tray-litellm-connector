@@ -4,6 +4,7 @@ import { LitellmAuth } from '../LitellmAuth';
 import { ChatCompletionInput } from './input';
 import { ChatCompletionOutput } from './output';
 import { globalConfigHttp } from '../GlobalConfig';
+import { litellmError } from '../errorHandling';
 
 type RawToolCall = {
 	id: string;
@@ -108,7 +109,9 @@ export const chatCompletionHandler = OperationHandlerSetup.configureHandler<
 				});
 			})
 			.handleResponse((ctx, input, response) =>
-				response.parseWithBodyAsJson((body: RawChatCompletion) => {
+				response
+						.withErrorHandling(litellmError(response.getStatusCode()))
+						.parseWithBodyAsJson((body: RawChatCompletion) => {
 					const choice = body.choices && body.choices[0];
 					const msg = choice?.message;
 					const content = msg?.content ?? '';

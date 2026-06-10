@@ -4,6 +4,7 @@ import { LitellmAuth } from '../LitellmAuth';
 import { ListModelsDdlInput } from './input';
 import { ListModelsDdlOutput } from './output';
 import { globalConfigHttp } from '../GlobalConfig';
+import { litellmError } from '../errorHandling';
 
 type RawModelInfo = {
 	data: Array<{
@@ -30,7 +31,7 @@ export const listModelsDdlHandler = OperationHandlerSetup.configureHandler<
 			.get('/model/info')
 			.handleRequest((ctx, input, request) => request.withoutBody())
 			.handleResponse((ctx, input, response) =>
-				response.parseWithBodyAsJson((body: RawModelInfo) => {
+				response.withErrorHandling(litellmError(response.getStatusCode())).parseWithBodyAsJson((body: RawModelInfo) => {
 					const entries = (body.data ?? []).filter(
 						(m) => m.model_name && m.model_name !== '*'
 					);

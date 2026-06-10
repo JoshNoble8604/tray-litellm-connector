@@ -4,6 +4,7 @@ import { LitellmAuth } from '../LitellmAuth';
 import { ImageGenerationInput } from './input';
 import { ImageGenerationOutput } from './output';
 import { globalConfigHttp } from '../GlobalConfig';
+import { litellmError } from '../errorHandling';
 
 type RawImage = {
 	url?: string;
@@ -38,7 +39,7 @@ export const imageGenerationHandler = OperationHandlerSetup.configureHandler<
 				})
 			)
 			.handleResponse((ctx, input, response) =>
-				response.parseWithBodyAsJson((body: RawImageGeneration) => {
+				response.withErrorHandling(litellmError(response.getStatusCode())).parseWithBodyAsJson((body: RawImageGeneration) => {
 					const data = body.data ?? [];
 					const first = data[0];
 					return OperationHandlerResult.success({

@@ -4,6 +4,7 @@ import { LitellmAuth } from '../LitellmAuth';
 import { CompletionsInput } from './input';
 import { CompletionsOutput } from './output';
 import { globalConfigHttp } from '../GlobalConfig';
+import { litellmError } from '../errorHandling';
 
 type RawCompletions = {
 	choices: Array<{
@@ -42,7 +43,7 @@ export const completionsHandler = OperationHandlerSetup.configureHandler<
 				})
 			)
 			.handleResponse((ctx, input, response) =>
-				response.parseWithBodyAsJson((body: RawCompletions) => {
+				response.withErrorHandling(litellmError(response.getStatusCode())).parseWithBodyAsJson((body: RawCompletions) => {
 					const choice = body.choices && body.choices[0];
 					return OperationHandlerResult.success({
 						text: choice?.text ?? '',

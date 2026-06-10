@@ -4,6 +4,7 @@ import { LitellmAuth } from '../LitellmAuth';
 import { ResponsesInput } from './input';
 import { ResponsesOutput } from './output';
 import { globalConfigHttp } from '../GlobalConfig';
+import { litellmError } from '../errorHandling';
 
 type RawOutputItem = {
 	type?: string;
@@ -64,7 +65,7 @@ export const responsesHandler = OperationHandlerSetup.configureHandler<
 				})
 			)
 			.handleResponse((ctx, input, response) =>
-				response.parseWithBodyAsJson((body: RawResponses) =>
+				response.withErrorHandling(litellmError(response.getStatusCode())).parseWithBodyAsJson((body: RawResponses) =>
 					OperationHandlerResult.success({
 						text: extractText(body),
 						status: body.status ?? '',
