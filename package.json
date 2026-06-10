@@ -35,7 +35,7 @@
 	"scripts": {
 		"reinstall": "rm package-lock.json && rm -rf node_modules && npm cache clean --force && npm install",
 		"clean": "rm -rf dist && rm tsconfig.tsbuildinfo",
-		"compile": "tsc --build && tscp >> /dev/null",
+		"compile": "tsc --build && tscp",
 		"test": "jest --config ./jest.config.js"
 	}
 }
