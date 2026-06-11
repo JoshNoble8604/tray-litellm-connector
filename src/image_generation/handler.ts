@@ -36,6 +36,9 @@ export const imageGenerationHandler = OperationHandlerSetup.configureHandler<
 					...(input.response_format
 						? { response_format: input.response_format }
 						: {}),
+					...(input.keep_warm !== undefined
+						? { keep_warm: input.keep_warm }
+						: {}),
 				})
 			)
 			.handleResponse((ctx, input, response) =>

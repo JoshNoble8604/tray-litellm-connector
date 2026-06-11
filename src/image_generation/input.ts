@@ -39,4 +39,10 @@ export type ImageGenerationInput = {
 	 * @description Optional. How the image is returned: url (default for some models) or b64_json.
 	 */
 	response_format?: string;
+	/**
+	 * @title Keep Model Warm
+	 * @description Optional (local SDXL/ComfyUI gateways). When true, the image model is kept loaded after this step instead of being unloaded — faster for back-to-back image steps, but holds GPU memory (blocks the large text model until a later non-warm render frees it). Leave off for one-off images.
+	 * @default false
+	 */
+	keep_warm?: boolean;
 };

@@ -20,24 +20,33 @@ import {
 export function litellmError(statusCode: number) {
 	// Result type is `never` (a failure carries no success value), which is assignable
 	// to every operation's OUT — so call sites don't need to name their output type.
-	return (text: string): OperationHandlerResult<never> => {
-		let message = text;
-		try {
-			const j = JSON.parse(text);
-			message =
-				j?.error?.message ??
-				j?.error ??
-				j?.message ??
-				j?.detail ??
-				text;
-			if (typeof message !== 'string') message = JSON.stringify(message);
-		} catch (e) {
-			/* body wasn't JSON — keep the raw text */
+	// The CDK passes the error body already-parsed as an object when it's JSON, or as a
+	// raw string otherwise — handle BOTH so the headline message is never "[object Object]".
+	return (body: unknown): OperationHandlerResult<never> => {
+		let obj: any = body;
+		if (typeof body === 'string') {
+			try {
+				obj = JSON.parse(body);
+			} catch (e) {
+				obj = null;
+			}
 		}
+		let message: any;
+		if (obj && typeof obj === 'object') {
+			message =
+				obj?.error?.message ??
+				obj?.error ??
+				obj?.message ??
+				obj?.detail ??
+				JSON.stringify(obj);
+		} else {
+			message = String(body);
+		}
+		if (typeof message !== 'string') message = JSON.stringify(message);
 		return OperationHandlerResult.failure<never>(
 			OperationHandlerError.apiError(
 				`LiteLLM proxy error (HTTP ${statusCode}): ${message}`,
-				{ status_code: statusCode, body: text }
+				{ status_code: statusCode, body: obj ?? String(body) }
 			)
 		);
 	};
