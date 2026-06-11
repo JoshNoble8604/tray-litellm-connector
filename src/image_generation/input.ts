@@ -13,6 +13,11 @@ export type ImageGenerationInput = {
 	 */
 	prompt: string;
 	/**
+	 * @title Negative Prompt
+	 * @description Optional (local SDXL/ComfyUI gateways). What to avoid in the image. Ignored by hosted models like dall-e.
+	 */
+	negative_prompt?: string;
+	/**
 	 * @title Number of Images
 	 * @description Optional. How many images to generate. Defaults to 1.
 	 * @default 1
@@ -20,25 +25,60 @@ export type ImageGenerationInput = {
 	n?: number;
 	/**
 	 * @title Size
-	 * @description Optional. Image dimensions, e.g. 1024x1024, 1792x1024, or 1024x1792.
+	 * @description Optional. Image dimensions. Pick a supported size for your model (square + common SDXL/dall-e aspect ratios).
 	 * @default 1024x1024
 	 */
-	size?: string;
+	size?:
+		| '1024x1024'
+		| '1152x896'
+		| '896x1152'
+		| '1216x832'
+		| '832x1216'
+		| '1344x768'
+		| '768x1344'
+		| '1792x1024'
+		| '1024x1792';
+	/**
+	 * @title Steps
+	 * @description Optional (local SDXL/ComfyUI gateways). Number of diffusion steps (e.g. 20–30). Ignored by hosted models.
+	 */
+	steps?: number;
+	/**
+	 * @title CFG Scale
+	 * @description Optional (local SDXL/ComfyUI gateways). Prompt-adherence / guidance scale (e.g. 6–8). Ignored by hosted models.
+	 */
+	cfg?: number;
+	/**
+	 * @title Seed
+	 * @description Optional (local SDXL/ComfyUI gateways). Fix the random seed for reproducible images; omit for a random seed.
+	 */
+	seed?: number;
+	/**
+	 * @title LoRA
+	 * @description Optional (local SDXL/ComfyUI gateways). A LoRA to apply — a known alias (e.g. "pony-smooth-style") or a raw .safetensors filename available on the gateway.
+	 */
+	lora?: string;
+	/**
+	 * @title LoRA Strength
+	 * @description Optional. How strongly to apply the LoRA (0–1.5; 1.0 = full). Only used when a LoRA is set.
+	 * @default 1.0
+	 */
+	lora_strength?: number;
 	/**
 	 * @title Quality
-	 * @description Optional. Rendering quality, e.g. standard or hd (dall-e-3), or low/medium/high (gpt-image-1).
+	 * @description Optional (hosted models). Rendering quality: standard/hd for dall-e-3, or low/medium/high for gpt-image-1.
 	 */
-	quality?: string;
+	quality?: 'standard' | 'hd' | 'low' | 'medium' | 'high';
 	/**
 	 * @title Style
-	 * @description Optional. Visual style for dall-e-3: vivid or natural.
+	 * @description Optional (dall-e-3 only). Visual style.
 	 */
-	style?: string;
+	style?: 'vivid' | 'natural';
 	/**
 	 * @title Response Format
-	 * @description Optional. How the image is returned: url (default for some models) or b64_json.
+	 * @description Optional. How the image is returned: a URL or base64-encoded data.
 	 */
-	response_format?: string;
+	response_format?: 'url' | 'b64_json';
 	/**
 	 * @title Keep Model Warm
 	 * @description Optional (local SDXL/ComfyUI gateways). When true, the image model is kept loaded after this step instead of being unloaded — faster for back-to-back image steps, but holds GPU memory (blocks the large text model until a later non-warm render frees it). Leave off for one-off images.
