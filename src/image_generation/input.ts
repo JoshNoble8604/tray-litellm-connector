@@ -41,16 +41,19 @@ export type ImageGenerationInput = {
 	/**
 	 * @title Steps
 	 * @description Optional (local SDXL/ComfyUI gateways). Number of diffusion steps (e.g. 20–30). Ignored by hosted models.
+	 * @default 25
 	 */
 	steps?: number;
 	/**
 	 * @title CFG Scale
 	 * @description Optional (local SDXL/ComfyUI gateways). Prompt-adherence / guidance scale (e.g. 6–8). Ignored by hosted models.
+	 * @default 7
 	 */
 	cfg?: number;
 	/**
 	 * @title Seed
-	 * @description Optional (local SDXL/ComfyUI gateways). Fix the random seed for reproducible images; omit for a random seed.
+	 * @description Optional (local SDXL/ComfyUI gateways). Seed for reproducible images. Leave at -1 for a random seed each run. Ignored by hosted models.
+	 * @default -1
 	 */
 	seed?: number;
 	/**
@@ -122,6 +125,7 @@ export type ImageGenerationInput = {
 	/**
 	 * @title Response Format
 	 * @description Optional. How the image is returned: a URL or base64-encoded data.
+	 * @default b64_json
 	 */
 	response_format?: 'url' | 'b64_json';
 	/**
