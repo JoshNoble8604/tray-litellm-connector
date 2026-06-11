@@ -1,0 +1,6 @@
+{
+	"name": "list_loras_ddl",
+	"title": "List LoRAs (DDL)",
+	"description": "Dynamic dropdown of LoRA files available on the connected gateway (local SDXL/ComfyUI exposes these). Used to populate LoRA pickers on the image step; hidden from the operation list.",
+	"type": "ddl"
+}

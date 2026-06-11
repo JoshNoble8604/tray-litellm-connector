@@ -54,16 +54,61 @@ export type ImageGenerationInput = {
 	 */
 	seed?: number;
 	/**
-	 * @title LoRA
-	 * @description Optional (local SDXL/ComfyUI gateways). A LoRA to apply — a known alias (e.g. "pony-smooth-style") or a raw .safetensors filename available on the gateway.
+	 * @title LoRA 1
+	 * @description Optional (local SDXL/ComfyUI gateways). Pick a LoRA available on the gateway. Stack more with LoRA 2/3/4. Ignored by hosted models.
+	 * @lookupOperation list_loras_ddl
+	 * @lookupInput {}
+	 * @lookupAuthRequired true
 	 */
-	lora?: string;
+	lora_1?: string;
 	/**
-	 * @title LoRA Strength
-	 * @description Optional. How strongly to apply the LoRA (0–1.5; 1.0 = full). Only used when a LoRA is set.
+	 * @title LoRA 1 Strength
+	 * @description How strongly to apply LoRA 1 (0–1.5; 1.0 = full).
 	 * @default 1.0
 	 */
-	lora_strength?: number;
+	lora_1_strength?: number;
+	/**
+	 * @title LoRA 2
+	 * @description Optional. A second LoRA to stack on top of LoRA 1.
+	 * @lookupOperation list_loras_ddl
+	 * @lookupInput {}
+	 * @lookupAuthRequired true
+	 */
+	lora_2?: string;
+	/**
+	 * @title LoRA 2 Strength
+	 * @description How strongly to apply LoRA 2 (0–1.5; 1.0 = full).
+	 * @default 1.0
+	 */
+	lora_2_strength?: number;
+	/**
+	 * @title LoRA 3
+	 * @description Optional. A third LoRA to stack.
+	 * @lookupOperation list_loras_ddl
+	 * @lookupInput {}
+	 * @lookupAuthRequired true
+	 */
+	lora_3?: string;
+	/**
+	 * @title LoRA 3 Strength
+	 * @description How strongly to apply LoRA 3 (0–1.5; 1.0 = full).
+	 * @default 1.0
+	 */
+	lora_3_strength?: number;
+	/**
+	 * @title LoRA 4
+	 * @description Optional. A fourth LoRA to stack.
+	 * @lookupOperation list_loras_ddl
+	 * @lookupInput {}
+	 * @lookupAuthRequired true
+	 */
+	lora_4?: string;
+	/**
+	 * @title LoRA 4 Strength
+	 * @description How strongly to apply LoRA 4 (0–1.5; 1.0 = full).
+	 * @default 1.0
+	 */
+	lora_4_strength?: number;
 	/**
 	 * @title Quality
 	 * @description Optional (hosted models). Rendering quality: standard/hd for dall-e-3, or low/medium/high for gpt-image-1.
