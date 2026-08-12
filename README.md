@@ -4,6 +4,8 @@ A custom [Tray](https://tray.io) connector (built with the Tray Connector Develo
 
 Because it speaks the standard OpenAI-compatible LiteLLM API, it works against **any** LiteLLM deployment (self-hosted, hosted, or Enterprise) and is agnostic to whatever models/providers sit behind the gateway (OpenAI, Anthropic, Bedrock, local models, etc.).
 
+> **Building a game with a local model?** See [`game-dev-assistant/`](game-dev-assistant/) — a standalone **MCP server** that turns a local LLM in **LM Studio** into a dev-time coding assistant for **Unity/Unreal** (scaffolding, project orientation, a persistent Game Design Document, and a local-LLM diagnostic). It's independent of the Tray connector and has its own README.
+
 ## Prerequisites
 
 - **Node.js 18+**

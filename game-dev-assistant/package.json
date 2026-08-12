@@ -1,0 +1,26 @@
+{
+  "name": "game-dev-assistant",
+  "version": "0.1.0",
+  "description": "Local-LLM game-dev MCP server: scaffolding, project orientation, design-doc memory, and LM Studio diagnostics for Unity/Unreal.",
+  "type": "module",
+  "bin": {
+    "game-dev-assistant": "dist/server.js"
+  },
+  "engines": {
+    "node": ">=18.17"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/server.js",
+    "dev": "node --loader ts-node/esm src/server.ts",
+    "smoke": "node dist/server.js --smoke"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.0"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "//": "Claude Code / Cursor / Cline: drop this as .mcp.json in your GAME PROJECT root (not this repo). Adjust paths + engine.",
+  "mcpServers": {
+    "game-dev-assistant": {
+      "command": "node",
+      "args": ["/ABSOLUTE/PATH/TO/tray-litellm-connector/game-dev-assistant/dist/server.js"],
+      "env": {
+        "GAMEDEV_PROJECT_ROOT": "/ABSOLUTE/PATH/TO/YourUnrealProject",
+        "GAMEDEV_ENGINE": "unreal",
+        "LMSTUDIO_BASE_URL": "http://localhost:1234/v1"
+      }
+    }
+  }
+}
